@@ -9,10 +9,10 @@ module.exports = {
     options: [],
     run: async (client, interaction, lang) => {
         try {
-            const supportServerLink = "";
-            const githubLink = "";
-            const replitLink = "";
-            const youtubeLink = "";
+            const supportServerLink = "a";
+            const githubLink = "a";
+            const replitLink = "a";
+            const youtubeLink = "a";
 
             const embed = new EmbedBuilder()
                 .setColor('#b300ff')
