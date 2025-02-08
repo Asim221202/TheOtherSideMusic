@@ -16,7 +16,7 @@ module.exports = {
   nodes: [
     
     {
-  "identifier": "Muzykant v4",
+  "name": "Muzykant v4",
   "password": "https://discord.gg/v6sdrD9kPh",
   "host": "lavalink_v4.muzykant.xyz",
   "port": 80,
