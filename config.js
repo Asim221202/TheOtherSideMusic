@@ -15,13 +15,13 @@ module.exports = {
   errorLog: "", 
   nodes: [
     
+  
     {
-  name: "Muzykant v4",
-  password: "https://discord.gg/v6sdrD9kPh",
-  host: "lavalink_v4.muzykant.xyz",
-  port: 80,
-  secure: false
-},
+            password: "https://discord.gg/v6sdrD9kPh",
+            host: "lavalink_v4.muzykant.xyz",
+            port: 80,
+            secure: false
+          },
     { 
       name: "saher",
       password: "saher.inzeworld.com",
