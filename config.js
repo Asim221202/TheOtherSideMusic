@@ -23,12 +23,12 @@ module.exports = {
       secure: false
     },
     {
-      name: "Catfein ID",
-      password: "catfein",
-      host: "lava.catfein.com",
-      port: 4000,
-      secure: false
-    }
+  "name": "ChalresNaig Node",
+  "password": "NAIGLAVA-dash.techbyte.host",
+  "host": "lavahatry4.techbyte.host",
+  "port": 3000,
+  "secure": false
+}
     
   
 
