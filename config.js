@@ -15,13 +15,14 @@ module.exports = {
   errorLog: "", 
   nodes: [
     
-    {
-      name: "Catfein ID",
-      password: "catfein",
-      host: "lava.catfein.com",
-      port: 4000,
-      secure: false
-    },
+    
+   "lavalink": {
+            "password": "https://discord.gg/v6sdrD9kPh",
+            "host": "lavalink_v4.muzykant.xyz",
+            "port": 80,
+            "secure": false
+          }
+,
     { 
       name: "saher",
       password: "saher.inzeworld.com",
