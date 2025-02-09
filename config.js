@@ -23,13 +23,13 @@ module.exports = {
   "port": 3000,
   "secure": false
 },
-    { 
-      name: "saher",
-      password: "saher.inzeworld.com",
-      host: "lava.inzeworld.com",
-      port: 3128,
-      secure: false
-    }
+    {
+  "name": "Public Lavalink v4 NonSSL",
+  "password": "https://dsc.gg/ajidevserver",
+  "host": "lava-v4.ajieblogs.eu.org",
+  "port": 80,
+  "secure": false
+}
     
   
 
