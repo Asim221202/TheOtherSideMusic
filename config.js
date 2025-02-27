@@ -9,7 +9,7 @@ module.exports = {
   commandsDir: './commands',  
   embedColor: "#1db954",
   activityName: "Şebnem Ferah", 
-  activityType: "LISTENING",  // Available activity types : LISTENING , PLAYING
+  activityType: "PLAYING",  // Available activity types : LISTENING , PLAYING
   SupportServer: "https://discord.gg/7qerY7B",
   embedTimeout: 5, 
   errorLog: "", 
