@@ -16,7 +16,7 @@ module.exports = {
   nodes: [
     
   
-   {
+ {
   "name": "INZEWORLD.COM (DE)",
   "password": "saher.inzeworld.com",
   "host": "lava.inzeworld.com",
