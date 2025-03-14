@@ -17,11 +17,11 @@ module.exports = {
     
   
 {
-  "name": "ChalresNaig Node",
-  "password": "NAIGLAVA-dash.techbyte.host",
-  "host": "lavahatry4.techbyte.host",
-  "port": 3000,
-  "secure": false
+      name: "Avinan",
+      password: "pokemon",
+      host: "new-york-node-1.vortexcloud.xyz",
+      port:  9376,
+      secure: false
 },
     {
   "name": "INZEWORLD.COM (DE)",
