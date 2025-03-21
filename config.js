@@ -23,7 +23,7 @@ module.exports = {
       port:  9376,
       secure: false
 },
-    {
+  {
   "name": "INZEWORLD.COM (DE)",
   "password": "saher.inzeworld.com",
   "host": "lava.inzeworld.com",
