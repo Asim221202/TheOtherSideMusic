@@ -17,17 +17,17 @@ module.exports = {
     
   
 {
-      name: "Avinan",
-      password: "pokemon",
+      name: "scrxpie",
+      password: "Asim2212",
       host: "new-york-node-1.vortexcloud.xyz",
-      port:  9376,
+      port:  9488,
       secure: false
 },
   {
   "name": "INZEWORLD.COM (DE)",
   "password": "saher.inzeworld.com",
   "host": "lava.inzeworld.com",
-  "port": 3128,
+  "port": 3161,
   "secure": false
 }
     
