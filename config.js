@@ -18,13 +18,7 @@ module.exports = {
   nodes: [
     
   
-{
-      name: "scrxpie",
-      password: "Asim2212",
-      host: "new-york-node-1.vortexcloud.xyz",
-      port:  9488,
-      secure: false
-},
+
   {
   "name": "INZEWORLD.COM (DE)",
   "password": "saher.inzeworld.com",
