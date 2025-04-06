@@ -197,7 +197,7 @@ async function cleanupPreviousTrackMessages(channel, guildId) {
     }
 
     // Clear the previous messages for this guild
-    guildTrackMessages.set(guildId, []);
+//guildTrackMessages.set(guildId, []);
 }
 
 // New function to clean up track-related messages
@@ -220,7 +220,7 @@ async function cleanupTrackMessages(client, player) {
     }
 
     // Clear the messages for this guild
-    guildTrackMessages.set(guildId, []);
+    //guildTrackMessages.set(guildId, []);
 }
 function formatDuration(ms) {
     const seconds = Math.floor((ms / 1000) % 60);
