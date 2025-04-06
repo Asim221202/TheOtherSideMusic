@@ -75,7 +75,7 @@ function initializePlayer(client) {
         const requester = requesters.get(trackUri);
 
         // Clean up previous track messages for this guild
-        await cleanupPreviousTrackMessages(channel, guildId);
+       // await cleanupPreviousTrackMessages(channel, guildId);
 
         try {
             const musicard = await Dynamic({
