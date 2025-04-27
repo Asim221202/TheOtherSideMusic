@@ -19,12 +19,12 @@ module.exports = {
     
   
 
-  {
-  "name": "INZEWORLD.COM (DE)",
-  "password": "saher.inzeworld.com",
-  "host": "lava.inzeworld.com",
-  "port": 3128,
-  "secure": false
+{
+      name: "scrxpie",
+      password: "Asim2212",
+      host: "http://meta.pylex.xyz:11508/",
+      port:  11508,
+      secure: false
 },
     {
       name: "MuzammilOPYT",
