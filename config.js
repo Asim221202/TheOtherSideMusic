@@ -22,7 +22,7 @@ module.exports = {
 {
       name: "scrxpie",
       password: "Asim2212",
-      host: "http://meta.pylex.xyz:11508/",
+      host: "meta.pylex.xyz",
       port:  11508,
       secure: false
 },
