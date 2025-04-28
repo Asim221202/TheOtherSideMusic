@@ -25,28 +25,7 @@ module.exports = {
       host: "meta.pylex.xyz",
       port:  11508,
       secure: false
-},
-    {
-      name: "MuzammilOPYT",
-      password: "yourpasswordhere",
-      host: "ind1.zapto.org",
-      port:  25575,
-      secure: false
-}, {
-      name: "GlaceYT",
-      password: "glaceyt",
-      host: "193.226.78.187",
-      port:  9372,
-      secure: false
-    },
-    {
-      name: "Avinan",
-      password: "avinan",
-      host: "new-york-node-1.vortexcloud.xyz",
-      port:  5008,
-      secure: false
 }
-    
   
 
   ]
