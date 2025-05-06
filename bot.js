@@ -35,7 +35,6 @@ fs.readdir("./events", (_err, files) => {
 });
 
 
-client.commands = [];
 fs.readdir(config.commandsDir, (err, files) => {
   if (err) throw err;
   files.forEach(async (f) => {
@@ -46,13 +45,18 @@ fs.readdir(config.commandsDir, (err, files) => {
           name: props.name,
           description: props.description,
           options: props.options,
+          execute: props.execute, // Make sure to include the execute function here!
+          handleVoiceStateUpdate: props.handleVoiceStateUpdate,
+          handleInteractionCreate: props.handleInteractionCreate,
         });
       }
     } catch (err) {
       console.log(err);
     }
   });
+  console.log("Loaded Commands:", client.commands); // Add this line for debugging
 });
+
 
 
 client.on("raw", (d) => {
