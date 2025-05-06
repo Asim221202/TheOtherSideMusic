@@ -35,21 +35,23 @@ fs.readdir("./events", (_err, files) => {
 });
 
 
-client.commands = new Collection();
-fs.readdir(config.commandsDir, async (err, files) => {
-    if (err) throw err;
-    for (const f of files) {
-        if (f.endsWith(".js")) {
-            const filePath = path.join(config.commandsDir, f);
-            const command = require(filePath);
-            client.commands.set(command.name, command);
-            client.commands.push({
-                name: command.name,
-                description: command.description,
-                options: command.options,
-            });
-        }
+client.commands = [];
+fs.readdir(config.commandsDir, (err, files) => {
+  if (err) throw err;
+  files.forEach(async (f) => {
+    try {
+      if (f.endsWith(".js")) {
+        let props = require(`${config.commandsDir}/${f}`);
+        client.commands.push({
+          name: props.name,
+          description: props.description,
+          options: props.options,
+        });
+      }
+    } catch (err) {
+      console.log(err);
     }
+  });
 });
 
 
