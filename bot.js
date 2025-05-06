@@ -70,7 +70,25 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
 client.on('interactionCreate', async interaction => {
     if (interaction.isCommand()) {
         const command = client.commands.find(cmd => cmd.name === interaction.commandName);
-        // ... (komut çalıştırma mantığınız) ...
+
+        if (!command) return;
+
+        try {
+            // Check if the command has an 'execute' function (for Slash Commands)
+            if (command.execute) {
+                await command.execute(interaction);
+            }
+            // If it doesn't have 'execute', assume it has a 'run' function (for older command styles)
+            else if (command.run) {
+                await command.run(interaction, client); // Adjust parameters as needed
+            } else {
+                console.error(`Command ${interaction.commandName} has neither 'execute' nor 'run' function.`);
+                await interaction.reply({ content: 'Bu komutu çalıştırmak için bir fonksiyon bulunamadı.', ephemeral: true });
+            }
+        } catch (error) {
+            console.error(error);
+            await interaction.reply({ content: 'Bu komutu çalıştırırken bir hata oluştu!', ephemeral: true });
+        }
     } else if (interaction.isButton()) {
         const joinToCreateCommand = client.commands.find(cmd => cmd.name === 'oda-olustur-sistemi');
         if (joinToCreateCommand && joinToCreateCommand.handleInteractionCreate) {
@@ -80,6 +98,7 @@ client.on('interactionCreate', async interaction => {
         // ... modal işlemleri ...
     }
 });
+
 
 
 client.login(config.TOKEN || process.env.TOKEN).catch((e) => {
