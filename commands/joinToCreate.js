@@ -2,18 +2,12 @@ const { SlashCommandBuilder, ChannelType, PermissionsBitField, EmbedBuilder, Act
 
 // Özel oda ayarlarını sunucu bazında saklamak için bir Map
 const sunucuOdaAyarlari = new Map();
+const olusturmaKanalAdi = 'Özel Oda Oluştur'; // Sabit oluşturma kanalı adı
 
 module.exports = {
-    name: 'oda-olustur-sistemi-ayarla', // Komut adını değiştirdim
-    description: 'Özel oda oluşturma sistemini ayarlar (kanal seçimi olmadan).',
+    name: 'oda-olustur-sistemi-kur', // Komut adını daha açıklayıcı yaptım
+    description: 'Özel oda oluşturma sistemini kurar.',
     options: [
-        {
-            name: 'olusturma-kanali',
-            type: 7, // Channel Type
-            description: 'Kullanıcıların özel oda oluşturmak için katılacağı ses kanalı.',
-            required: true,
-            channel_types: [2] // Voice Channel
-        },
         {
             name: 'kategori',
             type: 7, // Channel Type
@@ -23,20 +17,43 @@ module.exports = {
         },
     ],
     async execute(interaction) {
-        const olusturmaKanal = interaction.options.getChannel('olusturma-kanali');
         const kategori = interaction.options.getChannel('kategori');
         const guildId = interaction.guildId;
 
-        // Sunucuya ait ayarları sakla
-        sunucuOdaAyarlari.set(guildId, {
-            olusturmaKanalId: olusturmaKanal.id,
-            kategoriId: kategori.id,
-        });
+        try {
+            // Oluşturma kanalını oluştur veya zaten varsa ID'sini al
+            let olusturmaKanal = interaction.guild.channels.cache.find(
+                (channel) => channel.name === olusturmaKanalAdi && channel.type === ChannelType.GuildVoice && channel.parentId === kategori.id
+            );
 
-        await interaction.reply({
-            content: `Özel oda oluşturma sistemi bu sunucu için ayarlandı!\nOluşturma Kanalı: ${olusturmaKanal.name}\nKategori: ${kategori.name}`,
-            ephemeral: true
-        });
+            if (!olusturmaKanal) {
+                olusturmaKanal = await interaction.guild.channels.create({
+                    name: olusturmaKanalAdi,
+                    type: ChannelType.GuildVoice,
+                    parent: kategori.id,
+                    permissionOverwrites: [
+                        {
+                            id: interaction.guild.id,
+                            allow: [PermissionsBitField.Flags.Connect, PermissionsBitField.Flags.ViewChannel], // Herkes görebilir ve bağlanabilir
+                        },
+                    ],
+                });
+            }
+
+            // Sunucuya ait ayarları sakla
+            sunucuOdaAyarlari.set(guildId, {
+                olusturmaKanalId: olusturmaKanal.id,
+                kategoriId: kategori.id,
+            });
+
+            await interaction.reply({
+                content: `Özel oda oluşturma sistemi kuruldu!\nOluşturma Kanalı: ${olusturmaKanal.name} (Kategori: ${kategori.name})`,
+                ephemeral: true,
+            });
+        } catch (error) {
+            console.error('Oluşturma kanalı oluşturulurken bir hata oluştu:', error);
+            await interaction.reply({ content: 'Oluşturma kanalı oluşturulurken bir hata oluştu!', ephemeral: true });
+        }
     },
     async handleVoiceStateUpdate(oldState, newState, client) {
         const guildId = newState.guild.id;
@@ -46,7 +63,7 @@ module.exports = {
 
         const { olusturmaKanalId, kategoriId } = ayarlar;
 
-        // Kullanıcı belirlenen oluşturma kanalına katıldığında otomatik oda oluştur
+        // Kullanıcı belirlenen oluşturma kanalına katıldığında özel oda oluştur
         if (newState.channelId === olusturmaKanalId && oldState.channelId !== olusturmaKanalId) {
             const member = newState.member;
             const guild = newState.guild;
