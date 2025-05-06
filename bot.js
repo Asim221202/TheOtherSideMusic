@@ -71,6 +71,7 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
     }
 });
 
+
 client.on('interactionCreate', async interaction => {
     if (interaction.isCommand()) {
         const command = client.commands.find(cmd => cmd.name === interaction.commandName);
