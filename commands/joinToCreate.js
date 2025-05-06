@@ -1,22 +1,27 @@
 const { SlashCommandBuilder, ChannelType, PermissionsBitField, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
-// Özel oda ayarlarını saklamak için basit bir Map (sunucu bazında olabilir)
+// Özel oda ayarlarını sunucu bazında saklamak için bir Map
 const sunucuOdaAyarlari = new Map();
 
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('oda-olustur-sistemi')
-        .setDescription('Özel oda oluşturma sistemini ayarlar.')
-        .addChannelOption(option =>
-            option.setName('olusturma-kanali')
-                .setDescription('Kullanıcıların özel oda oluşturmak için katılacağı ses kanalı.')
-                .setRequired(true)
-                .addChannelTypes(ChannelType.GuildVoice))
-        .addChannelOption(option =>
-            option.setName('kategori')
-                .setDescription('Özel odaların oluşturulacağı kategori.')
-                .setRequired(true)
-                .addChannelTypes(ChannelType.GuildCategory)),
+    name: 'oda-olustur-sistemi',
+    description: 'Özel oda oluşturma sistemini ayarlar.',
+    options: [
+        {
+            name: 'olusturma-kanali',
+            type: 7, // Channel Type
+            description: 'Kullanıcıların özel oda oluşturmak için katılacağı ses kanalı.',
+            required: true,
+            channel_types: [2] // Voice Channel
+        },
+        {
+            name: 'kategori',
+            type: 7, // Channel Type
+            description: 'Özel odaların oluşturulacağı kategori.',
+            required: true,
+            channel_types: [4] // Category Channel
+        },
+    ],
     async execute(interaction) {
         const olusturmaKanal = interaction.options.getChannel('olusturma-kanali');
         const kategori = interaction.options.getChannel('kategori');
@@ -33,12 +38,11 @@ module.exports = {
             ephemeral: true
         });
     },
-    // Bu fonksiyon, voiceStateUpdate olayını işlemek için ana dosyada çağrılacak
     async handleVoiceStateUpdate(oldState, newState, client) {
         const guildId = newState.guild.id;
         const ayarlar = sunucuOdaAyarlari.get(guildId);
 
-        if (!ayarlar) return; // Ayarlar yoksa işlem yapma
+        if (!ayarlar) return;
 
         const { olusturmaKanalId, kategoriId } = ayarlar;
 
@@ -134,7 +138,6 @@ module.exports = {
             }
         }
     },
-    // Bu fonksiyon, interactionCreate olayını işlemek için ana dosyada çağrılacak
     async handleInteractionCreate(interaction) {
         if (!interaction.isButton()) return;
 
