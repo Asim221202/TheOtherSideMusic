@@ -4,8 +4,8 @@ const { SlashCommandBuilder, ChannelType, PermissionsBitField, EmbedBuilder, Act
 const sunucuOdaAyarlari = new Map();
 
 module.exports = {
-    name: 'oda-olustur-sistemi',
-    description: 'Özel oda oluşturma sistemini ayarlar.',
+    name: 'oda-olustur-sistemi-ayarla', // Komut adını değiştirdim
+    description: 'Özel oda oluşturma sistemini ayarlar (kanal seçimi olmadan).',
     options: [
         {
             name: 'olusturma-kanali',
@@ -46,6 +46,7 @@ module.exports = {
 
         const { olusturmaKanalId, kategoriId } = ayarlar;
 
+        // Kullanıcı belirlenen oluşturma kanalına katıldığında otomatik oda oluştur
         if (newState.channelId === olusturmaKanalId && oldState.channelId !== olusturmaKanalId) {
             const member = newState.member;
             const guild = newState.guild;
