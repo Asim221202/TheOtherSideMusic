@@ -28,13 +28,14 @@ fs.readdir("./events", (_err, files) => {
   files.forEach((file) => {
     if (!file.endsWith(".js")) return;
     const event = require(`./events/${file}`);
-    let eventName = file.split(".")[0]; 
+    let eventName = file.split(".")[0];
     client.on(eventName, event.bind(null, client));
     delete require.cache[require.resolve(`./events/${file}`)];
   });
 });
 
 
+client.commands = [];
 fs.readdir(config.commandsDir, (err, files) => {
   if (err) throw err;
   files.forEach(async (f) => {
@@ -45,18 +46,16 @@ fs.readdir(config.commandsDir, (err, files) => {
           name: props.name,
           description: props.description,
           options: props.options,
-          execute: props.execute, // Make sure to include the execute function here!
-          handleVoiceStateUpdate: props.handleVoiceStateUpdate,
-          handleInteractionCreate: props.handleInteractionCreate,
+          execute: props.execute, // EKLEDIK
+          handleVoiceStateUpdate: props.handleVoiceStateUpdate, // EKLEDIK
+          handleInteractionCreate: props.handleInteractionCreate, // EKLEDIK
         });
       }
     } catch (err) {
       console.log(err);
     }
   });
-  console.log("Loaded Commands:", client.commands); // Add this line for debugging
 });
-
 
 
 client.on("raw", (d) => {
@@ -64,6 +63,7 @@ client.on("raw", (d) => {
     if (![GatewayDispatchEvents.VoiceStateUpdate, GatewayDispatchEvents.VoiceServerUpdate].includes(d.t)) return;
     client.riffy.updateVoiceState(d);
 });
+
 client.on('voiceStateUpdate', async (oldState, newState) => {
     const joinToCreateCommand = client.commands.find(cmd => cmd.name === 'oda-olustur-sistemi');
     if (joinToCreateCommand && joinToCreateCommand.handleVoiceStateUpdate) {
@@ -74,24 +74,8 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
 client.on('interactionCreate', async interaction => {
     if (interaction.isCommand()) {
         const command = client.commands.find(cmd => cmd.name === interaction.commandName);
-
-        if (!command) return;
-
-        try {
-            // Check if the command has an 'execute' function (for Slash Commands)
-            if (command.execute) {
-                await command.execute(interaction);
-            }
-            // If it doesn't have 'execute', assume it has a 'run' function (for older command styles)
-            else if (command.run) {
-                await command.run(interaction, client); // Adjust parameters as needed
-            } else {
-                console.error(`Command ${interaction.commandName} has neither 'execute' nor 'run' function.`);
-                await interaction.reply({ content: 'Bu komutu çalıştırmak için bir fonksiyon bulunamadı.', ephemeral: true });
-            }
-        } catch (error) {
-            console.error(error);
-            await interaction.reply({ content: 'Bu komutu çalıştırırken bir hata oluştu!', ephemeral: true });
+        if (command && command.execute) { // DOĞRU FONKSİYONU ÇAĞIRIYORUZ
+            await command.execute(interaction);
         }
     } else if (interaction.isButton()) {
         const joinToCreateCommand = client.commands.find(cmd => cmd.name === 'oda-olustur-sistemi');
@@ -102,7 +86,6 @@ client.on('interactionCreate', async interaction => {
         // ... modal işlemleri ...
     }
 });
-
 
 
 client.login(config.TOKEN || process.env.TOKEN).catch((e) => {
