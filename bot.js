@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, Collection } = require("discord.js");
+const { Client, GatewayIntentBits } = require("discord.js");
 const config = require("./config.js");
 const fs = require("fs");
 const path = require('path');
@@ -28,7 +28,7 @@ fs.readdir("./events", (_err, files) => {
   files.forEach((file) => {
     if (!file.endsWith(".js")) return;
     const event = require(`./events/${file}`);
-    let eventName = file.split(".")[0];
+    let eventName = file.split(".")[0]; 
     client.on(eventName, event.bind(null, client));
     delete require.cache[require.resolve(`./events/${file}`)];
   });
@@ -60,10 +60,8 @@ client.on("raw", (d) => {
     if (![GatewayDispatchEvents.VoiceStateUpdate, GatewayDispatchEvents.VoiceServerUpdate].includes(d.t)) return;
     client.riffy.updateVoiceState(d);
 });
-
-// Yeni eklenen olay dinleyicileri
 client.on('voiceStateUpdate', async (oldState, newState) => {
-    const joinToCreateCommand = client.commands.get('oda-olustur-sistemi');
+    const joinToCreateCommand = client.commands.find(cmd => cmd.name === 'oda-olustur-sistemi');
     if (joinToCreateCommand && joinToCreateCommand.handleVoiceStateUpdate) {
         await joinToCreateCommand.handleVoiceStateUpdate(oldState, newState, client);
     }
@@ -71,25 +69,18 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
 
 client.on('interactionCreate', async interaction => {
     if (interaction.isCommand()) {
-        const command = client.commands.get(interaction.commandName);
-
-        if (!command) return;
-
-        try {
-            await command.execute(interaction);
-        } catch (error) {
-            console.error(error);
-            await interaction.reply({ content: 'Bu komutu çalıştırırken bir hata oluştu!', ephemeral: true });
-        }
+        const command = client.commands.find(cmd => cmd.name === interaction.commandName);
+        // ... (komut çalıştırma mantığınız) ...
     } else if (interaction.isButton()) {
-        const joinToCreateCommand = client.commands.get('oda-olustur-sistemi');
+        const joinToCreateCommand = client.commands.find(cmd => cmd.name === 'oda-olustur-sistemi');
         if (joinToCreateCommand && joinToCreateCommand.handleInteractionCreate) {
             await joinToCreateCommand.handleInteractionCreate(interaction);
         }
     } else if (interaction.isModalSubmit()) {
-        // TODO: Modal etkileşimlerini işle
+        // ... modal işlemleri ...
     }
 });
+
 
 client.login(config.TOKEN || process.env.TOKEN).catch((e) => {
   console.log('\n' + '─'.repeat(40));
