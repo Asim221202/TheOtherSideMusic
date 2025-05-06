@@ -46,9 +46,9 @@ fs.readdir(config.commandsDir, (err, files) => {
           name: props.name,
           description: props.description,
           options: props.options,
-          execute: props.execute, // EKLEDIK
-          handleVoiceStateUpdate: props.handleVoiceStateUpdate, // EKLEDIK
-          handleInteractionCreate: props.handleInteractionCreate, // EKLEDIK
+          execute: props.execute,
+          handleVoiceStateUpdate: props.handleVoiceStateUpdate,
+          handleInteractionCreate: props.handleInteractionCreate,
         });
       }
     } catch (err) {
@@ -65,21 +65,20 @@ client.on("raw", (d) => {
 });
 
 client.on('voiceStateUpdate', async (oldState, newState) => {
-    const joinToCreateCommand = client.commands.find(cmd => cmd.name === 'oda-olustur-sistemi');
+    const joinToCreateCommand = client.commands.find(cmd => cmd.name === 'oda-olustur-sistemi-ayarla'); // Komut adı güncellendi
     if (joinToCreateCommand && joinToCreateCommand.handleVoiceStateUpdate) {
         await joinToCreateCommand.handleVoiceStateUpdate(oldState, newState, client);
     }
 });
 
-
 client.on('interactionCreate', async interaction => {
     if (interaction.isCommand()) {
         const command = client.commands.find(cmd => cmd.name === interaction.commandName);
-        if (command && command.execute) { // DOĞRU FONKSİYONU ÇAĞIRIYORUZ
+        if (command && command.execute) {
             await command.execute(interaction);
         }
     } else if (interaction.isButton()) {
-        const joinToCreateCommand = client.commands.find(cmd => cmd.name === 'oda-olustur-sistemi');
+        const joinToCreateCommand = client.commands.find(cmd => cmd.name === 'oda-olustur-sistemi-ayarla'); // Komut adı güncellendi
         if (joinToCreateCommand && joinToCreateCommand.handleInteractionCreate) {
             await joinToCreateCommand.handleInteractionCreate(interaction);
         }
