@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits } = require("discord.js");
+const { Client, GatewayIntentBits, Collection } = require("discord.js");
 const config = require("./config.js");
 const fs = require("fs");
 const path = require('path');
@@ -28,30 +28,28 @@ fs.readdir("./events", (_err, files) => {
   files.forEach((file) => {
     if (!file.endsWith(".js")) return;
     const event = require(`./events/${file}`);
-    let eventName = file.split(".")[0]; 
+    let eventName = file.split(".")[0];
     client.on(eventName, event.bind(null, client));
     delete require.cache[require.resolve(`./events/${file}`)];
   });
 });
 
 
-client.commands = [];
-fs.readdir(config.commandsDir, (err, files) => {
-  if (err) throw err;
-  files.forEach(async (f) => {
-    try {
-      if (f.endsWith(".js")) {
-        let props = require(`${config.commandsDir}/${f}`);
-        client.commands.push({
-          name: props.name,
-          description: props.description,
-          options: props.options,
-        });
-      }
-    } catch (err) {
-      console.log(err);
+client.commands = new Collection();
+fs.readdir(config.commandsDir, async (err, files) => {
+    if (err) throw err;
+    for (const f of files) {
+        if (f.endsWith(".js")) {
+            const filePath = path.join(config.commandsDir, f);
+            const command = require(filePath);
+            client.commands.set(command.name, command);
+            client.commands.push({
+                name: command.name,
+                description: command.description,
+                options: command.options,
+            });
+        }
     }
-  });
 });
 
 
@@ -59,6 +57,36 @@ client.on("raw", (d) => {
     const { GatewayDispatchEvents } = require("discord.js");
     if (![GatewayDispatchEvents.VoiceStateUpdate, GatewayDispatchEvents.VoiceServerUpdate].includes(d.t)) return;
     client.riffy.updateVoiceState(d);
+});
+
+// Yeni eklenen olay dinleyicileri
+client.on('voiceStateUpdate', async (oldState, newState) => {
+    const joinToCreateCommand = client.commands.get('oda-olustur-sistemi');
+    if (joinToCreateCommand && joinToCreateCommand.handleVoiceStateUpdate) {
+        await joinToCreateCommand.handleVoiceStateUpdate(oldState, newState, client);
+    }
+});
+
+client.on('interactionCreate', async interaction => {
+    if (interaction.isCommand()) {
+        const command = client.commands.get(interaction.commandName);
+
+        if (!command) return;
+
+        try {
+            await command.execute(interaction);
+        } catch (error) {
+            console.error(error);
+            await interaction.reply({ content: 'Bu komutu çalıştırırken bir hata oluştu!', ephemeral: true });
+        }
+    } else if (interaction.isButton()) {
+        const joinToCreateCommand = client.commands.get('oda-olustur-sistemi');
+        if (joinToCreateCommand && joinToCreateCommand.handleInteractionCreate) {
+            await joinToCreateCommand.handleInteractionCreate(interaction);
+        }
+    } else if (interaction.isModalSubmit()) {
+        // TODO: Modal etkileşimlerini işle
+    }
 });
 
 client.login(config.TOKEN || process.env.TOKEN).catch((e) => {
