@@ -75,7 +75,7 @@ function initializePlayer(client) {
         const requester = requesters.get(trackUri);
 
         // Clean up previous track messages for this guild
-       // await cleanupPreviousTrackMessages(channel, guildId);
+        await cleanupPreviousTrackMessages(channel, guildId);
 
         try {
             const musicard = await Dynamic({
@@ -102,14 +102,14 @@ function initializePlayer(client) {
                 iconURL: musicIcons.playerIcon,
                 url: config.SupportServer
             })
-            .setFooter({ text: `Developed by SSCRXPIE | The Other Side Music v1.0`, iconURL: musicIcons.heartIcon })
+            .setFooter({ text: `Developed by SSRR | Prime Music v1.2`, iconURL: musicIcons.heartIcon })
             .setTimestamp()
             .setDescription(  
                 `- **Title:** [${track.info.title}](${track.info.uri})\n` +
                 `- **Author:** ${track.info.author || 'Unknown Artist'}\n` +
                 `- **Length:** ${formatDuration(track.info.length)}\n` +
                 `- **Requester:** ${requester}\n` +
-                `- **Source:** ${track.info.sourceName}\n` + '**- Controls :**\n 🔁 `Loop`, ❌ `Disable`, ⏭️ `Skip`, 📜 `Queue`, 🗑️ `Clear`\n ⏹️ `Stop`, ⏸️ `Pause`, ▶️ `Resume`, 🔊 `Vol +`, 🔉 `Vol -`')
+                `- **Source:** ${track.info.sourceName}\n` + '**- Controls :**\n 🔁 `Loop`, ❌ `Disable`, ⏭️ `Skip`, 🎤 `Lyrics`, 🗑️ `Clear`\n ⏹️ `Stop`, ⏸️ `Pause`, ▶️ `Resume`, 🔊 `Vol +`, 🔉 `Vol -`')
             .setImage('attachment://musicard.png')
             .setColor('#FF7A00');
 
@@ -197,7 +197,7 @@ async function cleanupPreviousTrackMessages(channel, guildId) {
     }
 
     // Clear the previous messages for this guild
-//guildTrackMessages.set(guildId, []);
+    guildTrackMessages.set(guildId, []);
 }
 
 // New function to clean up track-related messages
@@ -220,7 +220,7 @@ async function cleanupTrackMessages(client, player) {
     }
 
     // Clear the messages for this guild
-    //guildTrackMessages.set(guildId, []);
+    guildTrackMessages.set(guildId, []);
 }
 function formatDuration(ms) {
     const seconds = Math.floor((ms / 1000) % 60);
