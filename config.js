@@ -27,13 +27,16 @@ module.exports = {
       secure: false
 },
     
+
 {
       name: "GlaceYT",
       password: "glaceyt",
-      host: "193.226.78.187",
-      port:  3543,
+      host: "5.39.63.207",
+      port:  8262,
       secure: false
     }
+
+
 
   
 
